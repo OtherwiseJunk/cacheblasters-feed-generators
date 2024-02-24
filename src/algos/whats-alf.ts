@@ -1,13 +1,15 @@
 import { InvalidRequestError } from '@atproto/xrpc-server'
 import { QueryParams } from '../lexicon/types/app/bsky/feed/getFeedSkeleton'
 import { AppContext } from '../config'
+import { griddeningPostsDB as griddeningContent } from '../subscriptions/magicthegriddening.subscriptions'
 
 // max 15 chars
-export const shortname = 'whats-alf'
+export const shortname = 'griddening'
 
 export const handler = async (ctx: AppContext, params: QueryParams) => {
   let builder = ctx.db
     .selectFrom('post')
+    .where('type', '=', griddeningContent)
     .selectAll()
     .orderBy('indexedAt', 'desc')
     .orderBy('cid', 'desc')
